@@ -85,10 +85,13 @@ print("Predicted VMs:", prediction[0])
 ---
 
 ## 📈 Example output: out_prediction_one_week.csv
-day	hour	nb_machines
-0	0	4.12
-0	1	4.31
-...	...	…
+| day | hour | nb_machine |
+|-----|------|------------|
+| 0   | 0   | 4          |
+| 0   | 1   | 4          |
+| ... | ... | ...        |
+
+
 
 
 ---
