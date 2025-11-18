@@ -26,8 +26,8 @@ It trains multiple regression models, evaluates their performance, and automatic
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/<username>/<repository>.git
-cd <repository>
+git clone https://github.com/CGI-FR/fogSLAAntillas.git
+cd fogSLAAntillas
 pip install -r requirements.txt
 ```
 
