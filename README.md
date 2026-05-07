@@ -16,10 +16,16 @@ It trains multiple regression models, evaluates their performance, and automatic
   - Random Forest
   - Support Vector Regressor (SVR)
   - Gradient Boosting Regressor
+  -  The AutoRegressive Integrated Moving Average (ARIMA)
+  -  Prophet
+  -  Long Short-Term Memory (LSTM) networks
+  -  Transformer-based models
 - Evaluates models using RMSE, MAE, R²
 - Selects the best model through a PROMETHEE-like scoring method
 - Saves the best model as `best_model.pkl`
+- Generates predictions for 24 hours → out_prediction_one_day.csv
 - Generates predictions for 7×24 hours → `out_prediction_one_week.csv`
+- Generates predictions for 8×7×24 hours → out_prediction_two_months.csv
 
 ---
 
@@ -32,7 +38,7 @@ pip install -r requirements.txt
 ```
 
 Requires:  
-`pandas`, `scikit-learn`, `joblib`
+`numpy==2.4.4`,`pandas==3.0.2`,`prophet==1.3.0`,`scikit_learn==1.8.0`,`statsmodels==0.14.6`,`tensorflow==2.21.0`
 
 ---
 
@@ -78,19 +84,22 @@ Outputs:
 ## 🧪 Manual Prediction Example
 
 ```python
-from joblib import load
+import pickle
 import CGI_Prediction_Model as cgi
 
-model = load("best_model.joblib")
-prediction = cgi.predict_vms(2, 15, model)
+with open("best_model.pkl", "rb") as f:
+    bundle = pickle.load(f)
+
+model = bundle["model"]
+prediction = cgi.predict_vms(0, 2, model)
 print("Predicted VMs:", prediction[0])
 ```
 ---
 
 This code loads a previously trained machine learning model and uses it to predict the number of virtual machines (VMs) needed for a specific time.
 
-2 corresponds to the 3rd day of the week (counting starts from 0).
-15 corresponds to 15:00 (3 PM).
+-  2 corresponds to the 3rd day of the week (counting starts from 0).
+-  15 corresponds to 15:00 (3 PM).
 
 The function predict_vms() sends these values to the model, which returns the estimated number of VMs required at that time.
 
