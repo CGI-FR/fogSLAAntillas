@@ -84,6 +84,13 @@ print("Predicted VMs:", prediction[0])
 ```
 ---
 
+This code loads a previously trained machine learning model and uses it to predict the number of virtual machines (VMs) needed for a specific time.
+
+2 corresponds to the 3rd day of the week (counting starts from 0).
+15 corresponds to 15:00 (3 PM).
+
+The function predict_vms() sends these values to the model, which returns the estimated number of VMs required at that time.
+
 ## 📈 Example output: out_prediction_one_week.csv
 | day | hour | nb_machine |
 |-----|------|------------|
