@@ -55,8 +55,11 @@ python CGI_Prediction_Model.py data.csv
 ```
 
 Outputs:
-- `best_model.joblib`  
+- `best_model.pkl`
+- `model_summary.csv`
+- `out_prediction_one_day.csv`
 - `out_prediction_one_week.csv`
+- `out_prediction_two_months.csv`
 
 ---
 
