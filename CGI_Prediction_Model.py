@@ -139,15 +139,12 @@ def save_summary_csv(models_results, execution_times, promethee_scores=None, fil
 def evaluate_classical_models_script1_style(df):
     df = df.copy()
 
-    if "heure" not in df.columns and "hour" in df.columns:
-        df = df.rename(columns={"hour": "heure"})
-
-    required = ["day", "heure", TARGET_COL]
+    required = ["day", "hour", TARGET_COL]
     for col in required:
         if col not in df.columns:
             raise ValueError(f"Missing required column: {col}. Available columns: {list(df.columns)}")
 
-    X = df[["day", "heure"]]
+    X = df[["day", "hour"]]
     y = df[TARGET_COL]
 
     X_train, X_test, y_train, y_test = train_test_split(
@@ -193,7 +190,7 @@ def evaluate_classical_models_script1_style(df):
 
 
 def predict_vms(day_of_week, hour, model):
-    future_data = pd.DataFrame({"day": [day_of_week], "heure": [hour]})
+    future_data = pd.DataFrame({"day": [day_of_week], "hour": [hour]})
     return model.predict(future_data)
 
 
@@ -203,7 +200,7 @@ def build_prediction_grid_classical_day(model):
         for hours in range(24):
             pred = predict_vms(days, hours, model)
             data.append([days, hours, float(pred[0])])
-    return pd.DataFrame(data, columns=["day", "heure", "nb_machines"])
+    return pd.DataFrame(data, columns=["day", "hour", "nb_machines"])
 
 
 def build_prediction_grid_classical_week(model):
@@ -212,7 +209,7 @@ def build_prediction_grid_classical_week(model):
         for hours in range(24):
             pred = predict_vms(days, hours, model)
             data.append([days, hours, float(pred[0])])
-    return pd.DataFrame(data, columns=["day", "heure", "nb_machines"])
+    return pd.DataFrame(data, columns=["day", "hour", "nb_machines"])
 
 
 def build_prediction_grid_classical_2months(model):
@@ -222,7 +219,7 @@ def build_prediction_grid_classical_2months(model):
             for hours in range(24):
                 pred = predict_vms(days, hours, model)
                 data.append([days, hours, float(pred[0])])
-    return pd.DataFrame(data, columns=["day", "heure", "nb_machines"])
+    return pd.DataFrame(data, columns=["day", "hour", "nb_machines"])
 
 
 # ---------------------------------------------------------------------
@@ -597,10 +594,7 @@ def refit_full_model(model_name, raw_df, ts_df, lags):
 
     if model_name in classical_names:
         df = raw_df.copy()
-        if "heure" not in df.columns and "hour" in df.columns:
-            df = df.rename(columns={"hour": "heure"})
-
-        X = df[["day", "heure"]]
+        X = df[["day", "hour"]]
         y = df[TARGET_COL]
 
         model_map = {
@@ -640,7 +634,7 @@ def forecast_next_horizon(bundle, history_df, horizon=24, lags=None):
             ts = last_ts + pd.tseries.frequencies.to_offset(freq) * (i + 1)
             future_rows.append([ts.dayofweek, ts.hour])
 
-        future_df = pd.DataFrame(future_rows, columns=["day", "heure"])
+        future_df = pd.DataFrame(future_rows, columns=["day", "hour"])
         preds = bundle["model"].predict(future_df)
         future_index = pd.date_range(
             start=last_ts + pd.tseries.frequencies.to_offset(freq),
@@ -709,15 +703,13 @@ def save_best_model(bundle, base_path="best_model"):
         with open(f"{base_path}.pkl", "wb") as f:
             pickle.dump(bundle, f)
 
-
 def build_prediction_grid(preds):
     rows = []
     for i, yhat in enumerate(preds):
         day = (i // 24) % 7
-        heure = i % 24
-        rows.append([day, heure, float(yhat)])
-    return pd.DataFrame(rows, columns=["day", "heure", "nb_machines"])
-
+        hour = i % 24
+        rows.append([day, hour, float(yhat)])
+    return pd.DataFrame(rows, columns=["day", "hour", "nb_machines"])
 
 def save_multiple_outputs(best_bundle, history_df, lags):
     outputs = {
