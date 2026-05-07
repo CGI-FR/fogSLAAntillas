@@ -18,7 +18,7 @@ It trains multiple regression models, evaluates their performance, and automatic
   - Gradient Boosting Regressor
 - Evaluates models using RMSE, MAE, R²
 - Selects the best model through a PROMETHEE-like scoring method
-- Saves the best model as `best_model.joblib`
+- Saves the best model as `best_model.pkl`
 - Generates predictions for 7×24 hours → `out_prediction_one_week.csv`
 
 ---
